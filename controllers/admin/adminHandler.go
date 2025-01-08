@@ -1,15 +1,21 @@
 package controllers
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/anfastk/E-Commerce-Website/config"
 	"github.com/anfastk/E-Commerce-Website/middleware"
 	models "github.com/anfastk/E-Commerce-Website/models/adminModels"
 	"github.com/gin-gonic/gin"
-	"golang.org/x/crypto/bcrypt"
+	"gorm.io/gorm"
 )
+
+func ShowLoginPage(c *gin.Context){
+	c.HTML(http.StatusOK,"adminLogin.html",nil)
+}
 
 type AdminInput struct {
 	Email    string `json:"email"`
@@ -20,10 +26,10 @@ func AdminLoginHandler(c *gin.Context) {
 	var admin models.AdminModel
 	var input AdminInput
 
-	if err := c.ShouldBindJSON(&input); err != nil {
+	if err := c.ShouldBind(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"status": "Fail",
-			"error":  err.Error(),
+			"status": "Bad Request",
+			"error":  "Binding the data",
 			"code":   400,
 		})
 		return
@@ -31,26 +37,35 @@ func AdminLoginHandler(c *gin.Context) {
 
 	if input.Email == "" || input.Password == "" {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"status": "Fail",
-			"error":  "Email and Passowerd are required",
+			"status": "Bad Request",
+			"error":  "Email and Password are required",
 			"code":   400,
 		})
 		return
 	}
 
 	if err := config.DB.Where("email = ?", input.Email).First(&admin).Error; err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{
-			"status": "Fail",
-			"error":  "invalid Email",
-			"code":   400,
-		})
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			c.JSON(http.StatusUnauthorized, gin.H{
+				"status": "Unauthorized",
+				"error":  "Invalid Email",
+				"code":   401,
+			})
+		} else {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"status": "Internal Server Error",
+				"error":  "Database query failed",
+				"code":   500,
+			})
+		}
 		return
 	}
+	
 
-	if err := bcrypt.CompareHashAndPassword([]byte(admin.Password), []byte(input.Password)); err != nil {
+	if admin.Password != input.Password {
 		c.JSON(http.StatusUnauthorized, gin.H{
-			"status": "Fail",
-			"error":  "Invalid Passowrd",
+			"status": "Unauthorized",
+			"error":  "Invalid Password",
 			"code":   401,
 		})
 		return
@@ -60,16 +75,19 @@ func AdminLoginHandler(c *gin.Context) {
 	if err != nil {
 		fmt.Println("Error for generating JWT tokens")
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"status": "fail",
+			"status": "Internal Server Error",
 			"error":  "Failed to generate JWT tokens",
 			"code":   "500",
 		})
 		return
 	}
 
+	c.SetCookie("jwtTokensAdmin",token,int((time.Hour*1).Seconds()),"/","",false,true)
+
 	c.JSON(http.StatusOK, gin.H{
-		"Status": "Login Successful",
-		"token":  token,
-		"code":   "200",
+		"status":  "success",
+		"message": "Login successful",
+		"token":   token,
+		"code":    200,
 	})
 }

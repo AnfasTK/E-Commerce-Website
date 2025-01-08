@@ -11,8 +11,8 @@ var r *gin.Engine
 func init() {
 	r = gin.Default()
 	r.Static("static","./static")
-	config.DBconnect()
 	config.LoadEnvFile()
+	config.DBconnect()
 	config.SyncDatabase()
 }
 

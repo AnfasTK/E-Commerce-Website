@@ -8,7 +8,7 @@ import (
 
 	"github.com/anfastk/E-Commerce-Website/config"
 	"github.com/anfastk/E-Commerce-Website/middleware"
-	models "github.com/anfastk/E-Commerce-Website/models/adminModels"
+	"github.com/anfastk/E-Commerce-Website/models"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )

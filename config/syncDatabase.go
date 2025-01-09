@@ -3,7 +3,7 @@ package config
 import (
 	"log"
 
-	models "github.com/anfastk/E-Commerce-Website/models/adminModels"
+	models "github.com/anfastk/E-Commerce-Website/models"
 )
 
 func SyncDatabase() {

@@ -7,8 +7,8 @@ import (
 
 type Otp struct {
 	gorm.Model
-	Email       string `gorm:"size:255"`
-	OTP         string `gorm:"size:10"`
+	Email       string `gorm:"size:255" json:"otp_email"`
+	OTP         string `gorm:"size:10"  json:"otp"`
 	CreatedTime time.Time
 	ExpireTime  time.Time
 	UserAuth    UserAuth

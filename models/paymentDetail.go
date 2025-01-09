@@ -8,7 +8,7 @@ type PaymentDetail struct {
 	gorm.Model
 	UserID        uint
 	OrderID       uint
-	PaymentID     string `gorm:"size:100"`
+	PaymentID     string `gorm:"size:100" json:"paymentid"`
 	Receipt       string `gorm:"size:255"`
 	PaymentStatus string `gorm:"size:50"`
 	PaymentAmount float64

@@ -16,5 +16,5 @@ type OfferByCategory struct {
 	StartDate               time.Time `json:"validfrom"`
 	EndDate                 time.Time `json:"validto"`
 	IsOfferDeleted          bool      `gorm:"default:false"`
-	Category                Category
+	Category                Categories
 }

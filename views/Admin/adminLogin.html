@@ -32,7 +32,7 @@
                     <img src="/static/images/logos/logo.png" width="200px" height="40px" alt="Laptix">
                 </h1>
                 <h2 class="welcome">Welcome to Laptix Admin Page</h2>
-                <form id="adminLoginForm">
+                <form id="adminLoginForm" method="post">
                     <div class="input-group">
                         <label for="email">Email</label>
                         <input type="text" id="email" name="email" placeholder="Email" required>
@@ -83,7 +83,7 @@
                 if (response.ok) {
                     // Successful login - Redirect to dashboard
                     console.log('Login successful:', result);
-                    window.location.href = '/admin/dashboard';
+                    window.location.href = '/admin/users/';
                 } else {
                     // Display error messages under respective fields
                     if (result.error.includes("Email")) {

@@ -59,14 +59,14 @@
             <path fill="currentColor"
               d="M12 12.75c3.942 0 7.987 2.563 8.249 7.712a.75.75 0 0 1-.71.787c-2.08.106-11.713.171-15.077 0a.75.75 0 0 1-.711-.787C4.013 15.314 8.058 12.75 12 12.75m0-9a3.75 3.75 0 1 0 0 7.5a3.75 3.75 0 0 0 0-7.5" />
           </svg>
-          <a href="#" class="text-base font-medium hover:text-blue-500">User Management</a>
+          <a href="/admin/users" class="text-base font-medium hover:text-blue-500">User Management</a>
         </li>
         <li class="py-3 px-4 bg-blue-600 flex items-center">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" class="mr-2">
             <path fill="bg-black"
               d="M10 3H4a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1M9 9H5V5h4zm11-6h-6a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1m-1 6h-4V5h4zm-9 4H4a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-6a1 1 0 0 0-1-1m-1 6H5v-4h4zm8-6c-2.206 0-4 1.794-4 4s1.794 4 4 4s4-1.794 4-4s-1.794-4-4-4m0 6c-1.103 0-2-.897-2-2s.897-2 2-2s2 .897 2 2s-.897 2-2 2" />
           </svg>
-          <a href="#" class="text-base font-medium  text-black ">Category Management</a>
+          <a href="/admin/category" class="text-base font-medium  text-black ">Category Management</a>
         </li>
         <li class="py-3 px-4 flex items-center">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" class="mr-2">
@@ -150,24 +150,34 @@
     <!-- Content -->
     <main class="mx-5 flex-1">
 
-      <div class="bg-gray-100  py-4">
+      <div class="bg-gray-100 py-4">
         <div class="flex justify-between items-center">
           <h2 class="text-2xl font-bold">Category Management</h2>
-          <button onclick="toggleModal()" class="bg-black text-white px-4 py-2 rounded">ADD NEW CATEGORY</button>
+          <button onclick="toggleModal()" class="bg-black text-white px-4 py-2 rounded">
+            ADD NEW CATEGORY
+          </button>
         </div>
       </div>
 
-      <!--Add Category popup -->
+      <!-- Add Category Popup -->
       <div id="categoryModal" class="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center hidden">
         <div class="bg-white p-6 rounded-lg w-96">
           <h3 class="text-2xl font-bold mb-4">Add Category</h3>
-          <input type="text" id="categoryName" class="border p-2 w-full mb-4" placeholder="Enter Category Name">
-          <div class="flex justify-end">
-            <button onclick="addCategory()" class="bg-black text-white px-4 py-2 rounded mr-2">Add</button>
-            <button onclick="toggleModal()" class="bg-gray-300 text-black px-4 py-2 rounded">Close</button>
-          </div>
+          <form id="categoryForm" action="/admin/category/add" method="POST">
+            <input type="text" id="categoryName" name="name" class="border p-2 w-full mb-4"
+              placeholder="Enter Category Name" required />
+            <div class="flex justify-end">
+              <button type="submit" class="bg-black text-white px-4 py-2 rounded mr-2">Add</button>
+              <button type="button" id="close-category-popup"
+                class="bg-gray-300 text-black px-4 py-2 rounded">Close</button>
+            </div>
+          </form>
         </div>
       </div>
+
+
+
+
       <!-- Table -->
       <div class="mt-7 bg-white shadow-md rounded overflow-x-auto ">
         <table class="table-auto w-full border-collapse">
@@ -183,43 +193,53 @@
           </thead>
           <tbody>
             <!-- Row 1 -->
+            {{range .categories}}
             <tr class="border-t">
-              <td class="px-4 py-2">1</td>
-              <td class="px-4 py-2">Laptop</td>
-              <td class="px-4 py-2">Active</td>
+              <td class="px-4 py-2">{{.ID}}</td>
+              <td class="px-4 py-2">{{.Name}}</td>
+              <td class="px-4 py-2"></td>
               <td class="px-4 py-2"><button
                   class="edit-btn flex bg-blue-700 text-white px-3 py-1 rounded hover:bg-blue-600">
-                  <div class="mt-1 mr-2"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
-                      viewBox="0 0 24 24">
+                  <div class="mt-1 mr-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
                       <path fill="currentColor"
                         d="m7 17.013l4.413-.015l9.632-9.54c.378-.378.586-.88.586-1.414s-.208-1.036-.586-1.414l-1.586-1.586c-.756-.756-2.075-.752-2.825-.003L7 12.583zM18.045 4.458l1.589 1.583l-1.597 1.582l-1.586-1.585zM9 13.417l6.03-5.973l1.586 1.586l-6.029 5.971L9 15.006z" />
                       <path fill="currentColor"
                         d="M5 21h14c1.103 0 2-.897 2-2v-8.668l-2 2V19H8.158c-.026 0-.053.01-.079.01c-.033 0-.066-.009-.1-.01H5V5h6.847l2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2" />
-                    </svg></div>
+                    </svg>
+                  </div>
                   Edit
-                </button></td>
-              <td class="px-4 py-2"><button
-                  class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Block</button></td>
+                </button>
+              </td>
+              <td class="px-4 py-2">
+                <form action="/admin/category/{{ .ID }}/delete" method="post">
+                  <button class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">{{.Status}}</button>
+                </form>
+              </td>
               <td class="manage-offer-btn px-4 py-2"><button
                   class="bg-cyan-600 text-white px-3 py-1 rounded hover:bg-cyan-500">Manage
                   Offer</button></td>
             </tr>
+            {{end}}
             <!-- Add More Rows Here -->
 
           </tbody>
         </table>
       </div>
       <!-- Edit Popup -->
-      <div id="edit-popup" class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
-        <div class="bg-white rounded-lg p-6 w-96">
-          <h2 class="text-xl font-bold mb-4">Edit Category</h2>
-          <label class="block mb-2">Category Name</label>
-          <input type="text" id="category-name" class="w-full border rounded px-3 py-2 mb-4">
-          <div class="flex justify-end gap-2">
-            <button id="close-edit-popup"
-              class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Close</button>
-            <button id="save-edit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Save</button>
-          </div>
+      <!-- Edit Popup -->
+      <div id="edit-popup" class="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center hidden">
+        <div class="bg-white p-6 rounded-lg w-96">
+          <h3 class="text-2xl font-bold mb-4">Edit Item</h3>
+          <form id="editForm" action="/admin/category/{{.ID}}/edit" method="post">
+            <input type="text" id="editName" name="name" class="border p-2 w-full mb-4" placeholder="Enter New Name"
+              required />
+            <div class="flex justify-end">
+              <button type="submit" class="bg-blue-700 text-white px-4 py-2 rounded mr-2">Save</button>
+              <button type="button" id="close-edit-popup"
+                class="bg-gray-300 text-black px-4 py-2 rounded">Close</button>
+            </div>
+          </form>
         </div>
       </div>
 

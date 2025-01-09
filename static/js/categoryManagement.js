@@ -1,60 +1,56 @@
-// Edit Popup Logic
-document.querySelectorAll('.edit-btn').forEach(button => {
+document.addEventListener('DOMContentLoaded', () => {
+  // Add event listeners to all buttons with the "edit-btn" class
+  document.querySelectorAll('.edit-btn').forEach(button => {
     button.addEventListener('click', () => {
-      document.getElementById('edit-popup').classList.remove('hidden');
+      const editPopup = document.getElementById('edit-popup');
+      if (editPopup) {
+        editPopup.classList.remove('hidden'); // Show the popup
+      } else {
+        console.error("Element with ID 'edit-popup' not found.");
+      }
     });
   });
-  document.getElementById('close-edit-popup').addEventListener('click', () => {
-    document.getElementById('edit-popup').classList.add('hidden');
-  });
-  document.getElementById('save-edit').addEventListener('click', () => {
-    const categoryName = document.getElementById('category-name').value;
-    console.log('Save category name:', categoryName); // Data to send to backend
-    document.getElementById('edit-popup').classList.add('hidden');
-  });
-  
-  // Manage Offer Popup Logic
-  document.querySelectorAll('.manage-offer-btn').forEach(button => {
-    button.addEventListener('click', () => {
-      document.getElementById('manage-offer-popup').classList.remove('hidden');
+
+  // Close button logic for the edit popup
+  const closeEditButton = document.getElementById('close-edit-popup');
+  if (closeEditButton) {
+    closeEditButton.addEventListener('click', () => {
+      const editPopup = document.getElementById('edit-popup');
+      if (editPopup) {
+        editPopup.classList.add('hidden'); // Hide the popup
+      } else {
+        console.error("Element with ID 'edit-popup' not found.");
+      }
     });
-  });
-  document.getElementById('close-manage-offer-popup').addEventListener('click', () => {
-    document.getElementById('manage-offer-popup').classList.add('hidden');
-  });
-  document.getElementById('save-manage-offer').addEventListener('click', () => {
-    const offerData = {
-      name: document.getElementById('offer-name').value,
-      percentage: document.getElementById('offer-percentage').value,
-      description: document.getElementById('offer-description').value,
-      startDate: document.getElementById('offer-start-date').value,
-      endDate: document.getElementById('offer-end-date').value
-    };
-    console.log('Save offer data:', offerData); // Data to send to backend
-    document.getElementById('manage-offer-popup').classList.add('hidden');
-  });
-  document.getElementById('delete-offer').addEventListener('click', () => {
-    console.log('Delete offer'); // Add backend call for deleting offer
-    document.getElementById('manage-offer-popup').classList.add('hidden');
-  });
-  
-  //Add Category Popup
-  
-   // Function to toggle modal visibility
-   function toggleModal() {
+  } else {
+    console.error("Close button with ID 'close-edit-popup' not found.");
+  }
+
+  // Add Category Popup Logic
+  const toggleModal = () => {
     const modal = document.getElementById('categoryModal');
-    modal.classList.toggle('hidden');
-  }
-  
-  // Function to handle adding a category (example logic)
-  function addCategory() {
-    const categoryName = document.getElementById('categoryName').value;
-    if (categoryName) {
-      console.log(`Category added: ${categoryName}`);
-      // You can add further logic to handle the category addition
-      toggleModal(); // Close modal after adding
+    if (modal) {
+      modal.classList.toggle('hidden'); // Toggle the popup visibility
     } else {
-      alert('Please enter a category name');
+      console.error("Element with ID 'categoryModal' not found.");
     }
+  };
+
+  const addCategoryButton = document.querySelector('[onclick="toggleModal()"]');
+  if (addCategoryButton) {
+    addCategoryButton.addEventListener('click', () => {
+      toggleModal();
+    });
+  } else {
+    console.error("Add Category button with onclick='toggleModal()' not found.");
   }
-  
+
+  const closeCategoryButton = document.getElementById('close-category-popup');
+  if (closeCategoryButton) {
+    closeCategoryButton.addEventListener('click', () => {
+      toggleModal(); // Close the Add Category popup
+    });
+  } else {
+    console.error("Close button with ID 'close-category-popup' not found.");
+  }
+});

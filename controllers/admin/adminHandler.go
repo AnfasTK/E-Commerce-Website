@@ -13,6 +13,8 @@ import (
 	"gorm.io/gorm"
 )
 
+var RoleAdmin="Admin"
+
 func ShowLoginPage(c *gin.Context){
 	c.HTML(http.StatusOK,"adminLogin.html",nil)
 }
@@ -71,7 +73,7 @@ func AdminLoginHandler(c *gin.Context) {
 		return
 	}
 
-	token, err := middleware.GenerateJWT(admin.ID, admin.Email, admin.Password)
+	token, err := middleware.GenerateJWT(admin.ID, admin.Email, RoleAdmin)
 	if err != nil {
 		fmt.Println("Error for generating JWT tokens")
 		c.JSON(http.StatusInternalServerError, gin.H{

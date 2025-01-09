@@ -55,7 +55,7 @@ func GenerateJWT(userId uint, email string, role string) (string, error) {
 
 func AuthMiddleware(requiredRole string)gin.HandlerFunc{
 	return func (c *gin.Context)  {
-		tokenString,err:=c.Cookie("jwtToken"+requiredRole)
+		tokenString,err:=c.Cookie("jwtTokens"+requiredRole)
 		fmt.Println("Token",tokenString)
 		if err != nil {
 			c.JSON(http.StatusUnauthorized, gin.H{

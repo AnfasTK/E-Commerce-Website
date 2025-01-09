@@ -10,5 +10,5 @@ type ProductDetail struct {
 	CategoryID   uint
 	BrandName    string `gorm:"size:100" json:"brand"`
 	IsReturnable bool   `gorm:"default:true"`
-	Category     Category
+	Category     Categories
 }

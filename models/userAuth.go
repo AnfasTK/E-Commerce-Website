@@ -9,4 +9,5 @@ type UserAuth struct {
 	Passowrd  string `gorm:"not null,size:255" json:"password"`
 	Status    string `gorm:"not null,default:Active,check:status in ('Active','Blocked')"`
 	IsDeleted bool   `gorm:"default:false"`
+	IsBlocked bool   `gorm:"default:false"`
 }

@@ -59,7 +59,6 @@ func AuthMiddleware(requiredRole string) gin.HandlerFunc {
 		fmt.Println("Token", tokenString)
 
 		if err != nil || tokenString == "" {
-			// Redirect to login page if no valid cookie is found
 			if requiredRole == "Admin" {
 				c.Redirect(http.StatusSeeOther, "/admin/login")
 			} else {

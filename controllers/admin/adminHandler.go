@@ -14,7 +14,7 @@ import (
 	"gorm.io/gorm"
 )
 
-var RoleAdmin="Admin"
+var RoleAdmin = "Admin"
 
 func ShowLoginPage(c *gin.Context) {
 	tokenString, err := c.Cookie("jwtTokensAdmin")
@@ -32,9 +32,6 @@ func ShowLoginPage(c *gin.Context) {
 
 	c.HTML(http.StatusOK, "adminLogin.html", nil)
 }
-
-
-
 
 type AdminInput struct {
 	Email    string `json:"email"`
@@ -79,7 +76,6 @@ func AdminLoginHandler(c *gin.Context) {
 		}
 		return
 	}
-	
 
 	if admin.Password != input.Password {
 		c.JSON(http.StatusUnauthorized, gin.H{
@@ -101,7 +97,7 @@ func AdminLoginHandler(c *gin.Context) {
 		return
 	}
 
-	c.SetCookie("jwtTokensAdmin",token,int((time.Hour*1).Seconds()),"/","",false,true)
+	c.SetCookie("jwtTokensAdmin", token, int((time.Hour * 1).Seconds()), "/", "", false, true)
 
 	c.JSON(http.StatusOK, gin.H{
 		"status":  "success",

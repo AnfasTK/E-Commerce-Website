@@ -53,43 +53,47 @@ func GenerateJWT(userId uint, email string, role string) (string, error) {
 	return tokenString, nil
 }
 
-func AuthMiddleware(requiredRole string)gin.HandlerFunc{
-	return func (c *gin.Context)  {
-		tokenString,err:=c.Cookie("jwtTokens"+requiredRole)
-		fmt.Println("Token",tokenString)
-		if err != nil {
-			c.JSON(http.StatusUnauthorized, gin.H{
-				"status":  "Unauthorized",
-				"message": "Can't find cookie",
-				"code":    401,
-			})
+func AuthMiddleware(requiredRole string) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		tokenString, err := c.Cookie("jwtTokens" + requiredRole)
+		fmt.Println("Token", tokenString)
+
+		if err != nil || tokenString == "" {
+			// Redirect to login page if no valid cookie is found
+			if requiredRole == "Admin" {
+				c.Redirect(http.StatusSeeOther, "/admin/login")
+			} else {
+				c.JSON(http.StatusUnauthorized, gin.H{
+					"status":  "Unauthorized",
+					"message": "Can't find cookie",
+					"code":    401,
+				})
+			}
 			c.Abort()
 			return
 		}
-		if tokenString == "" {
-			c.JSON(http.StatusBadRequest, gin.H{
-				"status":  "Bad Request",
-				"message": "Empty token string.",
-				"code":    400,
-			})
-			c.Abort()
-			return
-		}
+
 		claims := &Claims{}
 		token, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
 			fmt.Println("Tokenclaims", token.Claims)
 			return JwtSecretKey, nil
 		})
+
 		if err != nil || !token.Valid {
 			fmt.Println("cookie error:", err)
-			c.JSON(http.StatusUnauthorized, gin.H{
-				"status":  "Unauthorized",
-				"message": "Invalid or expired JWT Token.",
-				"code":    401,
-			})
+			if requiredRole == "Admin" {
+				c.Redirect(http.StatusSeeOther, "/admin/login")
+			} else {
+				c.JSON(http.StatusUnauthorized, gin.H{
+					"status":  "Unauthorized",
+					"message": "Invalid or expired JWT Token.",
+					"code":    401,
+				})
+			}
 			c.Abort()
 			return
 		}
+
 		if claims.Role != requiredRole {
 			fmt.Println("req", requiredRole, claims.Role)
 			c.JSON(http.StatusForbidden, gin.H{
@@ -100,7 +104,17 @@ func AuthMiddleware(requiredRole string)gin.HandlerFunc{
 			c.Abort()
 			return
 		}
+
 		c.Set("userid", claims.UserId)
 		c.Next()
 	}
+}
+
+func NoCacheMiddleware() gin.HandlerFunc {
+    return func(c *gin.Context) {
+        c.Header("Cache-Control", "no-cache, no-store, must-revalidate")
+        c.Header("Pragma", "no-cache")
+        c.Header("Expires", "0")
+        c.Next()
+    }
 }

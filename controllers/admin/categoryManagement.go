@@ -68,62 +68,6 @@ func AddCategory(c *gin.Context) {
 	})
 }
 
-/* func EditCategory(c *gin.Context) {
-	categoryID := c.Param("id")
-
-	if categoryID == "" {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"status": "Bad Request",
-			"error":  "Category ID is missing",
-			"code":   400,
-		})
-		return
-	}
-
-	if _, err := strconv.ParseInt(categoryID, 10, 64); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"status": "Bad Request",
-			"error":  "Invalid Category ID",
-			"code":   400,
-		})
-		return
-	}
-
-	var category models.Categories
-
-	if err := config.DB.First(&category, categoryID).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{
-			"status": "Not Found",
-			"error":  "Category not found",
-			"code":   404,
-		})
-		return
-	}
-
-	if err := c.ShouldBindJSON(&category); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"status": "Bad Request",
-			"error":  "Failed to bind data",
-			"code":   400,
-		})
-		return
-	}
-
-	if err := config.DB.Model(&category).Where(categoryID).Updates(category).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"status": "Internal Server Error",
-			"error":  "Failed to update category",
-			"code":   500,
-		})
-		return
-	}
-
-	c.JSON(http.StatusOK, gin.H{
-		"status":  "OK",
-		"message": "Category updated successfully",
-		"code":    200,
-	})
-} */
 
 func EditCategory(c *gin.Context) {
     categoryID := c.Param("id")

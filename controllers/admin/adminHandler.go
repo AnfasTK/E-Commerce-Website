@@ -10,14 +10,36 @@ import (
 	"github.com/anfastk/E-Commerce-Website/middleware"
 	"github.com/anfastk/E-Commerce-Website/models"
 	"github.com/gin-gonic/gin"
+	"github.com/golang-jwt/jwt"
 	"gorm.io/gorm"
 )
 
 var RoleAdmin="Admin"
 
-func ShowLoginPage(c *gin.Context){
-	c.HTML(http.StatusOK,"adminLogin.html",nil)
+func ShowLoginPage(c *gin.Context) {
+	// Check if the JWT cookie exists for Admin (change for user or other roles)
+	tokenString, err := c.Cookie("jwtTokensAdmin")
+	if err == nil && tokenString != "" {
+		// Parse and validate the token using your existing middleware or ParseJWT
+		claims := &middleware.Claims{}
+		token, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
+			return middleware.JwtSecretKey, nil
+		})
+
+		// If the token is valid, redirect to the admin dashboard (or any other protected route)
+		if err == nil && token.Valid {
+			// User is already logged in, redirect to the admin dashboard (or any protected route)
+			c.Redirect(http.StatusSeeOther, "/admin/users")
+			return
+		}
+	}
+
+	// If no valid token, render the login page
+	c.HTML(http.StatusOK, "adminLogin.html", nil)
 }
+
+
+
 
 type AdminInput struct {
 	Email    string `json:"email"`

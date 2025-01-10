@@ -11,6 +11,7 @@ var r *gin.Engine
 func init() {
 	r = gin.Default()
 	r.Static("static","./static")
+	r.LoadHTMLGlob("views/Admin/*")
 	config.LoadEnvFile()
 	config.DBconnect()
 	config.SyncDatabase()

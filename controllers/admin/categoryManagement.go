@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"net/http"
 
-	"strconv"
 	"github.com/anfastk/E-Commerce-Website/config"
 	"github.com/anfastk/E-Commerce-Website/models"
 	"github.com/gin-gonic/gin"
+	"strconv"
 )
 
 func ListCategory(c *gin.Context) {
@@ -68,9 +68,67 @@ func AddCategory(c *gin.Context) {
 	})
 }
 
+/* func EditCategory(c *gin.Context) {
+	categoryID := c.Param("id")
+
+	if categoryID == "" {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status": "Bad Request",
+			"error":  "Category ID is missing",
+			"code":   400,
+		})
+		return
+	}
+
+	if _, err := strconv.ParseInt(categoryID, 10, 64); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status": "Bad Request",
+			"error":  "Invalid Category ID",
+			"code":   400,
+		})
+		return
+	}
+
+	var category models.Categories
+
+	if err := config.DB.First(&category, categoryID).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{
+			"status": "Not Found",
+			"error":  "Category not found",
+			"code":   404,
+		})
+		return
+	}
+
+	if err := c.ShouldBindJSON(&category); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status": "Bad Request",
+			"error":  "Failed to bind data",
+			"code":   400,
+		})
+		return
+	}
+
+	if err := config.DB.Model(&category).Where(categoryID).Updates(category).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"status": "Internal Server Error",
+			"error":  "Failed to update category",
+			"code":   500,
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"status":  "OK",
+		"message": "Category updated successfully",
+		"code":    200,
+	})
+} */
 
 func EditCategory(c *gin.Context) {
     categoryID := c.Param("id")
+
+	fmt.Println(categoryID)
 
     if categoryID == "" {
         c.JSON(http.StatusBadRequest, gin.H{
@@ -101,16 +159,16 @@ func EditCategory(c *gin.Context) {
         return
     }
 
-    if err := c.ShouldBindJSON(&category); err != nil {
+    if err := c.Bind(&category); err != nil {
         c.JSON(http.StatusBadRequest, gin.H{
             "status": "Bad Request",
-            "error":  "Failed to bind data",
+            "error":  "Failed to bind form data",
             "code":   400,
         })
         return
     }
 
-    if err := config.DB.Model(&category).Where(categoryID).Updates(category).Error; err != nil {
+    if err := config.DB.Model(&category).Where("id = ?", categoryID).Updates(category).Error; err != nil {
         c.JSON(http.StatusInternalServerError, gin.H{
             "status": "Internal Server Error",
             "error":  "Failed to update category",
@@ -127,12 +185,11 @@ func EditCategory(c *gin.Context) {
 }
 
 
-
 func DeleteCategory(c *gin.Context) {
 	var blockCategory models.Categories
 	id := c.Param("id")
 	fmt.Println(id)
-	if err := config.DB.First(&blockCategory,id).Error; err != nil {
+	if err := config.DB.First(&blockCategory, id).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{
 			"status": "Not found",
 			"error":  "Category not found",
@@ -142,7 +199,7 @@ func DeleteCategory(c *gin.Context) {
 	}
 	if blockCategory.IsDeleted {
 		blockCategory.IsDeleted = false
-		blockCategory.Status="Active"
+		blockCategory.Status = "Active"
 		c.JSON(http.StatusOK, gin.H{
 			"status":  "Ok",
 			"message": "Category deleted",
@@ -150,7 +207,7 @@ func DeleteCategory(c *gin.Context) {
 		})
 	} else {
 		blockCategory.IsDeleted = true
-		blockCategory.Status="Blocked"
+		blockCategory.Status = "Blocked"
 		c.JSON(http.StatusOK, gin.H{
 			"status":  "Ok",
 			"message": "Category deleted",

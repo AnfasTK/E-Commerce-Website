@@ -9,9 +9,6 @@ import (
 var RoleAdmin = "Admin"
 
 func AdminRoutes(r *gin.Engine) {
-
-	r.LoadHTMLGlob("views/Admin/*")
-
 	admin := r.Group("/admin")
 	{
 		admin.GET("/login", controllers.ShowLoginPage)

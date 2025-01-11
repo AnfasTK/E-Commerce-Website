@@ -15,6 +15,13 @@ func AdminRoutes(r *gin.Engine) {
 		admin.GET("/login", controllers.ShowLoginPage)
 		admin.POST("/login", controllers.AdminLoginHandler)
 	}
+	product := r.Group("/admin/products")
+	product.Use(middleware.AuthMiddleware(RoleAdmin))
+/* 	product.Use(middleware.NoCacheMiddleware()) */
+	{
+		product.GET("/", controllers.ShowProductsAdmin)
+		product.GET("/add", controllers.ShowAddProductPage)
+	}
 	userRoutes := r.Group("/admin/users")
 	userRoutes.Use(middleware.AuthMiddleware(RoleAdmin))
 	userRoutes.Use(middleware.NoCacheMiddleware())

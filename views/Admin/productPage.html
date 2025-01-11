@@ -8,12 +8,13 @@
     <link rel="stylesheet" href="/static/css/font_style.css" type="text/css" />
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="/static/js/nav&sideBar.js" defer></script>
-    <script src="/static/js/productpage.js" defer></script>    
+    <script src="/static/js/productpage.js" defer></script>
 </head>
 
 <body class="bg-gray-100 min-h-screen flex flex-col lg:flex-row">
     <!-- Sidebar -->
-    <aside id="sidebar" class="lg:block hidden w-full lg:w-64 bg-black text-white flex flex-col sticky top-0 lg:h-screen z-50 ">
+    <aside id="sidebar"
+        class="lg:block hidden w-full lg:w-64 bg-black text-white flex flex-col sticky top-0 lg:h-screen z-50 ">
         <div class="py-6 px-4 flex items-center justify-start space-x-4">
             <!-- Hamburger Menu for Small Screens inside Sidebar -->
             <button class="lg:hidden text-white" onclick="toggleSidebar()">
@@ -38,10 +39,12 @@
                 <li class="py-3 px-4 bg-blue-600 flex items-center space-x-2">
                     <!-- All Products Button with Icon -->
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 512 512" fill="black">
-                        <rect width="384" height="256" x="64" y="176" fill="none" stroke="black" stroke-linejoin="round" stroke-width="32" rx="28.87" ry="28.87" />
-                        <path fill="black" stroke="black" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M144 80h224m-256 48h288" />
-                    </svg>                    
-                    <a href="#" class="text-base font-medium  text-black">All Products</a>
+                        <rect width="384" height="256" x="64" y="176" fill="none" stroke="black" stroke-linejoin="round"
+                            stroke-width="32" rx="28.87" ry="28.87" />
+                        <path fill="black" stroke="black" stroke-linecap="round" stroke-miterlimit="10"
+                            stroke-width="32" d="M144 80h224m-256 48h288" />
+                    </svg>
+                    <a href="/admin/products" class="text-base font-medium  text-black">All Products</a>
                 </li>
                 <li class="py-3 px-4 flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" class="mr-2">
@@ -58,14 +61,14 @@
                         <path fill="currentColor"
                             d="M12 12.75c3.942 0 7.987 2.563 8.249 7.712a.75.75 0 0 1-.71.787c-2.08.106-11.713.171-15.077 0a.75.75 0 0 1-.711-.787C4.013 15.314 8.058 12.75 12 12.75m0-9a3.75 3.75 0 1 0 0 7.5a3.75 3.75 0 0 0 0-7.5" />
                     </svg>
-                    <a href="#" class="text-base font-medium hover:text-blue-500">User Management</a>
+                    <a href="/admin/users" class="text-base font-medium hover:text-blue-500">User Management</a>
                 </li>
                 <li class="py-3 px-4 flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" class="mr-2">
                         <path fill="currentColor"
                             d="M10 3H4a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1M9 9H5V5h4zm11-6h-6a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1m-1 6h-4V5h4zm-9 4H4a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-6a1 1 0 0 0-1-1m-1 6H5v-4h4zm8-6c-2.206 0-4 1.794-4 4s1.794 4 4 4s4-1.794 4-4s-1.794-4-4-4m0 6c-1.103 0-2-.897-2-2s.897-2 2-2s2 .897 2 2s-.897 2-2 2" />
                     </svg>
-                    <a href="#" class="text-base font-medium hover:text-blue-500">Category Management</a>
+                    <a href="/admin/category" class="text-base font-medium hover:text-blue-500">Category Management</a>
                 </li>
                 <li class="py-3 px-4 flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" class="mr-2">
@@ -157,7 +160,9 @@
             <div class="bg-gray-100  py-4">
                 <div class="flex justify-between items-center">
                     <h2 class="text-2xl font-bold">All Products</h2>
-                    <button class="bg-black text-white px-4 py-2 rounded">ADD NEW PRODUCT</button>
+                    <a href=" /admin/products/add">
+                        <button class="bg-black text-white px-4 py-2 rounded">ADD NEW PRODUCT</button>
+                    </a>
                 </div>
                 <div class="mt-4 flex items-center">
                     <select id="categories" class="px-4 py-2 rounded focus:outline-none bg-gray-100 ">
@@ -181,7 +186,8 @@
                                         d="M3 9.5a1.5 1.5 0 1 1 0-3a1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3a1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3a1.5 1.5 0 0 1 0 3" />
                                 </svg>
                             </button>
-                            <div class="menuOptions absolute right-0 mt-2 w-32 bg-white border rounded-lg shadow-lg hidden sticky top-0">
+                            <div
+                                class="menuOptions absolute right-0 mt-2 w-32 bg-white border rounded-lg shadow-lg hidden sticky top-0">
                                 <ul class="text-sm text-gray-700">
                                     <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">Option 1</li>
                                     <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">Option 2</li>
@@ -189,12 +195,12 @@
                                 </ul>
                             </div>
                         </div>
-                    
+
                         <div class="p-4 flex items-start">
                             <!-- Product Image -->
                             <img src="https://via.placeholder.com/150" alt="Adidas Ultra Boost"
                                 class="w-24 h-24 object-cover rounded-lg">
-                    
+
                             <!-- Product Title and Price -->
                             <div class="ml-4 flex-1">
                                 <h2 class="text-lg font-semibold text-gray-800">Adidas Ultra Boost</h2>
@@ -202,13 +208,13 @@
                                 <p class="text-xl font-bold text-gray-900 mt-1">$110.40</p>
                             </div>
                         </div>
-                    
+
                         <!-- Summary -->
                         <div class="px-4 mt-4">
                             <h3 class="text-sm font-semibold text-gray-800">Summary</h3>
                             <p class="text-sm text-gray-600">Long distance running requires a lot from athletes.</p>
                         </div>
-                    
+
                         <!-- Sales and Remaining Products -->
                         <div class="px-4 my-5">
                             <div
@@ -234,7 +240,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Additional Product Cards Can Be Added Here -->
                 </div>
             </div>

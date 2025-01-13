@@ -7,11 +7,11 @@ import (
 	"mime/multipart"
 )
 
-func UploadImageToCloudinary(file multipart.File, fileHeader *multipart.FileHeader, cld *cloudinary.Cloudinary) (string, error) {
+func UploadImageToCloudinary(file multipart.File, fileHeader *multipart.FileHeader, cld *cloudinary.Cloudinary,folder string) (string, error) {
 	ctx := context.Background()
 
 	uploadParams, err := cld.Upload.Upload(ctx, file, uploader.UploadParams{
-		Folder: "products",
+		Folder: folder,
 	})
 	if err != nil {
 		return "", err

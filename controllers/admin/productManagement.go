@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -64,14 +63,13 @@ func AddMainProductDetails(c *gin.Context) {
 	cld:=config.InitCloudinary()
 
 	form,_:=c.MultipartForm()
-	fmt.Println("====================",form.File["product_image"],"========================")
 	if form !=nil{
 		if productImage,ok:=form.File["product_image"];ok && len(productImage)>0 {
 			fileHeader:=productImage[0]
 			file,_:=fileHeader.Open()
 			defer file.Close()
 
-			url,err:=utils.UploadImageToCloudinary(file,fileHeader,cld)
+			url,err:=utils.UploadImageToCloudinary(file,fileHeader,cld,"products")
 			if err !=nil {
 				tx.Rollback()
 				c.JSON(http.StatusInternalServerError, gin.H{
@@ -86,7 +84,6 @@ func AddMainProductDetails(c *gin.Context) {
 				ProductImages: url,
 				ProductID: product.ID,
 			}
-			fmt.Println(image)
 			if err:=tx.Create(&image).Error;err!=nil {
 				c.JSON(http.StatusInternalServerError, gin.H{
 					"status":  "Internal Server Error",

@@ -17,19 +17,19 @@ func AdminRoutes(r *gin.Engine) {
 	}
 	product := r.Group("/admin/products")
 	product.Use(middleware.AuthMiddleware(RoleAdmin))
- 	product.Use(middleware.NoCacheMiddleware()) 
+	product.Use(middleware.NoCacheMiddleware())
 	{
 		product.GET("/", controllers.ShowProductsAdmin)
 		product.GET("/main/add", controllers.ShowAddMainProduct)
-		product.POST("main/add",controllers.AddMainProductDetails)
+		product.POST("main/add", controllers.AddMainProductDetails)
 	}
-	userRoutes := r.Group("/admin/users")
-	userRoutes.Use(middleware.AuthMiddleware(RoleAdmin))
-	userRoutes.Use(middleware.NoCacheMiddleware())
+	adminUser := r.Group("/admin/users")
+	adminUser.Use(middleware.AuthMiddleware(RoleAdmin))
+	adminUser.Use(middleware.NoCacheMiddleware())
 	{
-		userRoutes.GET("/", controllers.ListUsers)
-		userRoutes.POST("/:id/block", controllers.BlockUser)
-		userRoutes.POST("/:id/delete", controllers.DeleteUser)
+		adminUser.GET("/", controllers.ListUsers)
+		adminUser.POST("/:id/block", controllers.BlockUser)
+		adminUser.POST("/:id/delete", controllers.DeleteUser)
 	}
 	category := r.Group("/admin/category")
 	category.Use(middleware.AuthMiddleware(RoleAdmin))

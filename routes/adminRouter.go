@@ -17,10 +17,11 @@ func AdminRoutes(r *gin.Engine) {
 	}
 	product := r.Group("/admin/products")
 	product.Use(middleware.AuthMiddleware(RoleAdmin))
-/* 	product.Use(middleware.NoCacheMiddleware()) */
+ 	product.Use(middleware.NoCacheMiddleware()) 
 	{
 		product.GET("/", controllers.ShowProductsAdmin)
-		product.GET("/add", controllers.ShowAddProductPage)
+		product.GET("/main/add", controllers.ShowAddMainProduct)
+		product.POST("main/add",controllers.AddMainProductDetails)
 	}
 	userRoutes := r.Group("/admin/users")
 	userRoutes.Use(middleware.AuthMiddleware(RoleAdmin))

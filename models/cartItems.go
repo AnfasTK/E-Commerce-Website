@@ -12,5 +12,5 @@ type CartItem struct {
 	Quantity         int
 	CartDetail       Cart
 	ProductDetail    ProductDetail
-	ProductVariant   ProductVariant
+	ProductVariant   ProductVariantDetails
 }

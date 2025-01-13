@@ -191,24 +191,26 @@
             </div>
 
             <!-- Product Images -->
-            <div class="flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-6 mt-8">
-                <div class="w-full lg:w-1/2">
-                    <img class="rounded shadow w-full h-auto max-w-[400px] mx-auto" src="download (1).jpeg"
-                        alt="Main Product Image">
-                </div>
-                <div class="grid lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-2 gap-4 w-full lg:w-1/2">
-                    <img class="rounded shadow w-full h-[120px] object-cover" src="download (1).jpeg"
-                        alt="Product Image 1">
-                    <img class="rounded shadow w-full h-[120px] object-cover" src="download (1).jpeg"
-                        alt="Product Image 2">
-                    <img class="rounded shadow w-full h-[120px] object-cover" src="download (1).jpeg"
-                        alt="Product Image 3">
-                    <img class="rounded shadow w-full h-[120px] object-cover" src="download (1).jpeg"
-                        alt="Product Image 4">
-                    <img class="rounded shadow w-full h-[120px] object-cover" src="download (1).jpeg"
-                        alt="Product Image 5">
-                    <img class="rounded shadow w-full h-[120px] object-cover" src="download (1).jpeg"
-                        alt="Product Image 6">
+            <div class="flex  mt-8 justify-center">
+                <div class="w-full lg:w-1/2 relative group">
+                    <!-- Image container with hover effect -->
+                    <img class="rounded shadow w-full h-auto max-w-[400px] mx-auto" 
+                        src="/Screenshot 2024-12-30 092420.png" alt="Main Product Image">
+            
+                    <!-- Three dots icon visible on hover -->
+                    <div class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <button id="options-btn" class="text-2xl text-gray-500 hover:text-gray-700">
+                            &#x22EE;
+                        </button>
+            
+                        <!-- Options container (Change and Delete) -->
+                        <div id="options" class="hidden absolute top-8 right-0 mt-2 bg-white shadow-md rounded-md w-32 text-gray-700">
+                            <ul>
+                                <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">Change</li>
+                                <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">Delete</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -396,7 +398,7 @@
                                     More</button>
                                 <button type="submit"
                                     class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition">Submit</button>
-                                    <span id="closeModal"
+                                <span id="closeModal"
                                     class="text-white text-xl bg-gray-600 float-right cursor-pointer py-2 px-4 rounded hover:bg-blue-600 transitio">Close</span>
                             </form>
                         </div>
@@ -405,6 +407,22 @@
             </div>
         </main>
     </div>
+    <script>
+        const optionsBtn = document.getElementById("options-btn");
+        const optionsMenu = document.getElementById("options");
+    
+        optionsBtn.addEventListener("click", function(event) {
+            event.stopPropagation(); // Prevent the click from bubbling up to the window
+            optionsMenu.classList.toggle("hidden");
+        });
+    
+        window.addEventListener("click", function(event) {
+            if (!event.target.closest(".group")) {
+                optionsMenu.classList.add("hidden");
+            }
+        });
+    </script>
+    
 </body>
 
 </html>

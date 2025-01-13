@@ -13,7 +13,7 @@ import (
 func ListCategory(c *gin.Context) {
 	var categorys []models.Categories
 
-	if err := config.DB.Where("is_deleted = ?", false).Find(&categorys).Error; err != nil {
+	if err := config.DB.Where("is_deleted = ? AND status = ?", false,"Active").Find(&categorys).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"Status": "InternalServerError",
 			"error":  "Failed to fetch categories",

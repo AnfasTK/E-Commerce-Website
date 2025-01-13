@@ -1,8 +1,12 @@
-
 function handleFileUpload(input, previewContainerId) {
   const previewContainer = document.getElementById(previewContainerId);
 
-  Array.from(input.files).forEach(file => {
+  // Clear previous previews
+  previewContainer.innerHTML = '';
+
+  const file = input.files[0]; // Get the first file
+
+  if (file) {
     const reader = new FileReader();
 
     reader.onload = function (e) {
@@ -11,17 +15,22 @@ function handleFileUpload(input, previewContainerId) {
       preview.innerHTML = `
                 <img src="${e.target.result}" alt="" class="w-12 h-12 mr-4">
                 <p class="flex-1 text-gray-700">${file.name}</p>
-                <button type="button" class="text-red-500" onclick="removePreview(this)">&times;</button>
+                <button type="button" class="text-red-500" onclick="removePreview('${input.id}', '${previewContainerId}')">&times;</button>
             `;
       previewContainer.appendChild(preview);
     };
 
     reader.readAsDataURL(file);
-  });
+  }
 }
 
-function removePreview(button) {
-  button.parentElement.remove();
+function removePreview(inputId, previewContainerId) {
+  const input = document.getElementById(inputId);
+  const previewContainer = document.getElementById(previewContainerId);
+
+  // Clear file input and preview
+  input.value = '';
+  previewContainer.innerHTML = '';
 }
 
 function enableDragAndDrop(dropAreaId, inputId, previewContainerId) {
@@ -44,15 +53,8 @@ function enableDragAndDrop(dropAreaId, inputId, previewContainerId) {
     const files = e.dataTransfer.files;
     const dataTransfer = new DataTransfer();
 
-    // Append existing files
-    Array.from(input.files).forEach(file => {
-      dataTransfer.items.add(file);
-    });
-
-    // Append newly dropped files
-    Array.from(files).forEach(file => {
-      dataTransfer.items.add(file);
-    });
+    // Clear previous files and set the first dropped file
+    dataTransfer.items.add(files[0]);
 
     input.files = dataTransfer.files;
     handleFileUpload(input, previewContainerId);
@@ -63,8 +65,7 @@ function enableDragAndDrop(dropAreaId, inputId, previewContainerId) {
   });
 }
 
-// Enable drag-and-drop for banners and gallery
+// Enable drag-and-drop for product image
 document.addEventListener('DOMContentLoaded', () => {
   enableDragAndDrop('banner-drop-area', 'banner-input', 'banner-preview');
-  enableDragAndDrop('gallery-drop-area', 'gallery-input', 'gallery-preview');
 });

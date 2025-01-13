@@ -4,7 +4,7 @@ import (
 	"gorm.io/gorm"
 )
 
-type ProductVariant struct {
+type ProductVariantDetails struct {
 	gorm.Model
 	ProductID      uint                   `gorm:"not null"`
 	Size           string                 `gorm:"size:100" json:"size"`
@@ -18,5 +18,6 @@ type ProductVariant struct {
 	ProductSummary string                 `gorm:"size:255" json:"summery"`
 	IsDeleted      bool                   `gorm:"default:false"`
 	Product        ProductDetail          `gorm:"foreignKey:ProductID"`
-	Specification  []ProductSpecification `gorm:"foreignKey:ProductVariantsID"`
+	VariantsImages []ProductVariantsImage `gorm:"foreignKey:ProductVariantID"`
+	Specification  []ProductSpecification `gorm:"foreignKey:ProductVariantID"`
 }

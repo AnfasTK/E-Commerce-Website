@@ -4,9 +4,7 @@ import "gorm.io/gorm"
 
 type ProductImage struct {
 	gorm.Model
-	ProductImages  []byte        `gorm:"type:bytea"`
-	ProductBanners []byte        `gorm:"type:bytea"`
-	ProductPosters []byte        `gorm:"type:bytea"`
+	ProductImages  string        `gorm:"not null"`
 	ProductID      uint          `gorm:"not null"`
 	Product        ProductDetail `gorm:"foreignKey:ProductID"`
 }
